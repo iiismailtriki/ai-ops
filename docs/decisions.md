@@ -12,3 +12,4 @@
 10. **Credentials referenced, never embedded**. Token encrypted in n8n DB; exported workflows hold only a credential ID, safe for git.
 11. **Pin n8n behavior explicitly**: unverified community packages off (supply-chain risk), safer timeout/compression limits set now instead of changing silently on upgrade.
 13. **Execution data retention 7 days / 5000 runs**. Executions store full email content in Postgres; keep enough for debugging, not a permanent copy of my inbox (data minimization, GDPR mindset).
+14. **Gemini via AI Studio, Tier 1 prepaid (5 EUR, no auto-reload)**. Paid tier = prompts not used for training/human review. Prepaid with no auto-reload = hard spending cap. Key restricted to Gemini API + bound to service account. TODO Phase 8: add IP restriction to VPS IP.
