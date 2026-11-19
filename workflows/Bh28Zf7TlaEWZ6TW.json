@@ -1,0 +1,99 @@
+{
+  "updatedAt": "2026-11-19T16:39:04.508Z",
+  "createdAt": "2026-11-19T16:32:47.546Z",
+  "id": "Bh28Zf7TlaEWZ6TW",
+  "name": "PING TTELEFRAM",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8bb65acb-065c-48f6-8de5-3323c5c75398",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
+        "text": "=ai-ops is alive {{ $now.toFormat('HH:mm') }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "f813a79d-8b87-411a-9428-97cbac2611b6",
+      "name": "Send a text message",
+      "webhookId": "817643bd-f632-40b8-b11c-ac4b260f9985",
+      "credentials": {
+        "telegramApi": {
+          "id": "vjFtc2n20AuXdC17",
+          "name": "telegram-ismail-ops-bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "pinData": {},
+  "versionId": "1791e342-f745-4efc-b06f-4df2043b8d89",
+  "activeVersionId": null,
+  "versionCounter": 8,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-11-19T16:32:47.546Z",
+      "createdAt": "2026-11-19T16:32:47.546Z",
+      "role": "workflow:owner",
+      "workflowId": "Bh28Zf7TlaEWZ6TW",
+      "projectId": "nSVN1p439aFVQeXK",
+      "project": {
+        "updatedAt": "2026-11-19T00:06:29.380Z",
+        "createdAt": "2026-11-18T23:59:38.202Z",
+        "id": "nSVN1p439aFVQeXK",
+        "name": "Owner <owner@example.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "5e8a994a-a73b-4460-8e45-2079429a7c91"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}
