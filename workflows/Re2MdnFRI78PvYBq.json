@@ -1,0 +1,97 @@
+{
+  "updatedAt": "2026-11-19T17:38:45.251Z",
+  "createdAt": "2026-11-19T17:37:28.778Z",
+  "id": "Re2MdnFRI78PvYBq",
+  "name": "My workflow",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "01d2f786-1769-471c-ac1e-e0175b7ef1d6",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 10,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "bf5e4066-8998-4e4e-9a81-7e5b8644b140",
+      "name": "Get many messages",
+      "webhookId": "d2685f7f-d2cb-4d58-bb7f-9426ba8e378e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "w9cvOPi7mFb05grL",
+          "name": "GmailIsmailReadONLY"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "pinData": {},
+  "versionId": "bd58c191-3549-40de-8d44-58242748de6a",
+  "activeVersionId": null,
+  "versionCounter": 3,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-11-19T17:37:28.778Z",
+      "createdAt": "2026-11-19T17:37:28.778Z",
+      "role": "workflow:owner",
+      "workflowId": "Re2MdnFRI78PvYBq",
+      "projectId": "nSVN1p439aFVQeXK",
+      "project": {
+        "updatedAt": "2026-11-19T00:06:29.380Z",
+        "createdAt": "2026-11-18T23:59:38.202Z",
+        "id": "nSVN1p439aFVQeXK",
+        "name": "Owner <owner@example.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "5e8a994a-a73b-4460-8e45-2079429a7c91"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}

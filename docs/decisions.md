@@ -11,3 +11,4 @@
 9. **Telegram as the interface**. Free bot API, inline buttons for approvals, already on my phone, no frontend to build. Not email (would pollute the inbox we triage), not WhatsApp (paid business API).
 10. **Credentials referenced, never embedded**. Token encrypted in n8n DB; exported workflows hold only a credential ID, safe for git.
 11. **Pin n8n behavior explicitly**: unverified community packages off (supply-chain risk), safer timeout/compression limits set now instead of changing silently on upgrade.
+13. **Execution data retention 7 days / 5000 runs**. Executions store full email content in Postgres; keep enough for debugging, not a permanent copy of my inbox (data minimization, GDPR mindset).
