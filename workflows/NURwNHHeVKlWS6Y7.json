@@ -1,0 +1,221 @@
+{
+  "updatedAt": "2026-11-19T20:27:40.167Z",
+  "createdAt": "2026-11-19T19:46:21.649Z",
+  "id": "NURwNHHeVKlWS6Y7",
+  "name": "Daily digest",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9af8e749-0f26-424f-a47c-6a010ded7d90",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -144
+      ],
+      "id": "135243e9-7927-4b17-8bce-f7bf2669d4b6",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, category, priority, summary, from_addr, suspicious\nFROM emails\nWHERE notified_at IS NULL\nORDER BY priority, received_at DESC\nLIMIT 50;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.8,
+      "position": [
+        272,
+        -64
+      ],
+      "id": "2c834c51-8d8d-4fad-856c-e2c17c7ae191",
+      "name": "Pending",
+      "executeOnce": true,
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "zQ2Vb2q5uv7hL8b6",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all().map(i => i.json);\nconst icons = { urgent: '🔴', job: '💼', admin: '📋', social: '👥', newsletter: '📰' };\nconst order = ['urgent', 'job', 'admin', 'social', 'newsletter'];\nconst date = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short', timeZone: 'Europe/Berlin' });\nconst sender = r => String(r.from_addr || '').replace(/<.*>/, '').replace(/\"/g, '').trim() || 'unknown';\n\nconst lines = [`☀️ Inbox digest, ${date}`, `${rows.length} new emails`, ''];\n\nconst sus = rows.filter(r => r.suspicious);\nif (sus.length) {\n  lines.push(`⚠️ SUSPICIOUS (${sus.length}), do not act on these`);\n  sus.forEach(r => lines.push(`• ${sender(r)}`));\n  lines.push('');\n}\n\nfor (const cat of order) {\n  const items = rows.filter(r => r.category === cat && !r.suspicious);\n  if (!items.length) continue;\n  lines.push(`${icons[cat]} ${cat.toUpperCase()} (${items.length})`);\n  if (cat === 'newsletter') { lines.push('  skipped, low priority', ''); continue; }\n  items.forEach(r => lines.push(`• ${r.summary} (${sender(r)})`));\n  lines.push('');\n}\n\nlet text = lines.join('\\n');\nif (text.length > 3900) text = text.slice(0, 3900) + '\\n… (truncated)';\nreturn [{ json: { text, ids: rows.map(r => r.id).join('|') } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        -64
+      ],
+      "id": "c0db7ca7-5d02-4d2b-a7a6-1d1271761713",
+      "name": "Build Digest"
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        608,
+        -64
+      ],
+      "id": "b768c2f0-e0d2-4f25-bc6c-49a3f7ed8cc4",
+      "name": "Send Telegram",
+      "webhookId": "817643bd-f632-40b8-b11c-ac4b260f9985",
+      "credentials": {
+        "telegramApi": {
+          "id": "vjFtc2n20AuXdC17",
+          "name": "telegram-ismail-ops-bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE emails SET notified_at = now() WHERE id = ANY(string_to_array($1, '|')::bigint[]);",
+        "options": {
+          "queryReplacement": "={{ $('Build Digest').item.json.ids }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.8,
+      "position": [
+        832,
+        -64
+      ],
+      "id": "c0a149d3-d702-4b45-9edd-586d538c0558",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "zQ2Vb2q5uv7hL8b6",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Pending",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Pending",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pending": {
+      "main": [
+        [
+          {
+            "node": "Build Digest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Digest": {
+      "main": [
+        [
+          {
+            "node": "Send Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Telegram": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "pinData": {},
+  "versionId": "61bcc014-2a2e-46aa-b407-22a2c4fd2edb",
+  "activeVersionId": null,
+  "versionCounter": 22,
+  "triggerCount": 0,
+  "sourceWorkflowId": null,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-11-19T19:46:21.649Z",
+      "createdAt": "2026-11-19T19:46:21.649Z",
+      "role": "workflow:owner",
+      "workflowId": "NURwNHHeVKlWS6Y7",
+      "projectId": "nSVN1p439aFVQeXK",
+      "project": {
+        "updatedAt": "2026-11-19T00:06:29.380Z",
+        "createdAt": "2026-11-18T23:59:38.202Z",
+        "id": "nSVN1p439aFVQeXK",
+        "name": "Owner <owner@example.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "5e8a994a-a73b-4460-8e45-2079429a7c91"
+      }
+    }
+  ],
+  "versionMetadata": {
+    "name": null,
+    "description": null
+  }
+}
