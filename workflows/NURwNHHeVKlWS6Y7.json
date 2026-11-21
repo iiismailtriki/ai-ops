@@ -4,7 +4,7 @@
   "id": "NURwNHHeVKlWS6Y7",
   "name": "Daily digest",
   "description": null,
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -182,16 +182,25 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": [
+        null
+      ],
+      "recurrenceRuleSignatures": [
+        null
+      ]
+    }
+  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "nodeGroups": [],
   "pinData": {},
   "versionId": "61bcc014-2a2e-46aa-b407-22a2c4fd2edb",
-  "activeVersionId": null,
+  "activeVersionId": "61bcc014-2a2e-46aa-b407-22a2c4fd2edb",
   "versionCounter": 22,
-  "triggerCount": 0,
+  "triggerCount": 1,
   "sourceWorkflowId": null,
   "tags": [],
   "shared": [
@@ -215,7 +224,7 @@
     }
   ],
   "versionMetadata": {
-    "name": null,
-    "description": null
+    "name": "Version 61bcc014",
+    "description": ""
   }
 }

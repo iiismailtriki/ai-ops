@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-19T19:34:34.649Z",
+  "updatedAt": "2026-11-19T20:57:02.444Z",
   "createdAt": "2026-11-19T18:54:06.284Z",
   "id": "pOXd92gJRVLFPsBi",
   "name": "email-triage",
   "description": null,
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -308,6 +308,26 @@
       ],
       "id": "a7d3f5d4-5184-4067-8b6a-9153a0fa436e",
       "name": "Filter & Sanitize"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        192
+      ],
+      "id": "4995c89e-187e-4290-b7ed-709e5bd339a0",
+      "name": "Schedule Trigger"
     }
   ],
   "connections": {
@@ -387,22 +407,42 @@
           }
         ]
       ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": [
+        null
+      ],
+      "recurrenceRuleSignatures": [
+        null
+      ]
+    }
+  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "nodeGroups": [],
   "pinData": {},
-  "versionId": "703170ec-338f-48ec-832f-de69aef41e1c",
-  "activeVersionId": null,
-  "versionCounter": 50,
-  "triggerCount": 0,
+  "versionId": "8a59384f-93bc-425a-8690-ec64fca7ad00",
+  "activeVersionId": "8a59384f-93bc-425a-8690-ec64fca7ad00",
+  "versionCounter": 54,
+  "triggerCount": 1,
   "sourceWorkflowId": null,
   "tags": [],
   "shared": [
@@ -426,7 +466,7 @@
     }
   ],
   "versionMetadata": {
-    "name": null,
-    "description": null
+    "name": "Version 8a59384f",
+    "description": ""
   }
 }
